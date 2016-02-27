@@ -16,11 +16,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AYBaseTask *d = [AYBaseTask new];
-    d.configurationRequest(^(id data) {
+    [AYBaseTask new]
+    .configurationRequest(^(id data) {
         NSLog(@"%@", data);
     }).urlMap(^(id data) {
         NSLog(@"%@", data);
+    }).doGetTask(^(id data) {
+        NSLog(@"%@", data);
+    });
+    
+    
+    [AYBaseTask new]
+    .url(@"http://www.baidu.com")
+    .postParams(^(NSDictionary *post) {
+        [post setValue:@"1" forKey:@"1"];
+        [post setValue:@"2" forKey:@"2"];
     }).doGetTask(^(id data) {
         NSLog(@"%@", data);
     });

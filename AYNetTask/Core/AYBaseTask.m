@@ -10,7 +10,7 @@
 
 @interface AYBaseTask ()
 
-@property (nonatomic, copy) AYRequestCompletedBlock requestCompletedBlock;
+@property (nonatomic, copy) AYConfigurationRequestBlock configurationRequestBlock;
 
 @end
 
@@ -25,7 +25,8 @@
 - (AYBaseTask * (^)(AYRequestCompletedBlock block))doGetTask {
     return ^(AYRequestCompletedBlock block) {
         block(@"doGetTask");
-        _requestCompletedBlock(@"!!!!");
+        if(_configurationRequestBlock)
+            _configurationRequestBlock(@"!!!!");
         return self;
     };
 }
@@ -40,8 +41,8 @@
 
 /** http 基本参数配置 **/
 - (AYBaseTask * (^)(AYConfigurationRequestBlock block))configurationRequest {
-    return ^(AYRequestCompletedBlock block) {
-        _requestCompletedBlock = block;
+    return ^(AYConfigurationRequestBlock block) {
+        _configurationRequestBlock = block;
         return self;
     };
 }
@@ -54,6 +55,22 @@
     };
 }
 
+/** url 设置 **/
+- (AYBaseTask * (^)(NSString *url))url {
+    return ^(NSString *url) {
+        return self;
+    };
+}
+
+/** post参数设置 **/
+- (AYBaseTask * (^)(AYPostParamsBlock block))postParams {
+    return ^(AYPostParamsBlock block) {
+        NSMutableDictionary *postParams = [NSMutableDictionary new];
+        block(postParams);
+        NSLog(@"%@", postParams);
+        return self;
+    };
+}
 
 /** 任务执行完成 **/
 - (void)taskCompleted {

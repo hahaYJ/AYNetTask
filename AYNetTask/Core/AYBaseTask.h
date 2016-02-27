@@ -12,12 +12,13 @@
 typedef void(^AYRequestCompletedBlock)(id data);
 typedef void(^AYConfigurationRequestBlock)(id data);
 typedef void(^AYUrlMapBlock)(NSString *origin);
+typedef void(^AYPostParamsBlock)(NSDictionary *params);
 
 @class AYBaseTask;
 /**
  定义一套基本任务操作规则
  **/
-@protocol AYBaseTaskAction
+@protocol AYNetAction
 
 /** 发起get任务执行 **/
 - (AYBaseTask * (^)(AYRequestCompletedBlock block))doGetTask;
@@ -31,8 +32,14 @@ typedef void(^AYUrlMapBlock)(NSString *origin);
 /** url 重映射 **/
 - (AYBaseTask * (^)(AYUrlMapBlock block))urlMap;
 
+/** url 设置 **/
+- (AYBaseTask * (^)(NSString *url))url;
+
+/** post参数设置 **/
+- (AYBaseTask * (^)(AYPostParamsBlock block))postParams;
+
 @end
 
-@interface AYBaseTask : NSObject <AYBaseTaskAction>
+@interface AYBaseTask : NSObject <AYNetAction>
 
 @end
